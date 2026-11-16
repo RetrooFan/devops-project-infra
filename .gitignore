@@ -1,2 +1,5 @@
+.terraform
+terraform.tfstate*
+
 backend.tf
 terraform.tfvars
