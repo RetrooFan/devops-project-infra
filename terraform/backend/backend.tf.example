@@ -1,0 +1,10 @@
+terraform {
+  backend "s3" {
+    bucket       = "bucket"
+    key          = "terraform-states/backend.tfstate"
+    region       = "eu-central-1"
+    use_lockfile = true
+    encrypt      = true
+    profile      = "profile"
+  }
+}
