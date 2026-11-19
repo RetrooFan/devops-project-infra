@@ -1,11 +1,11 @@
 variable "github_org" {
-  type    = string
+  type = string
 }
 
 variable "github_repo" {
-  type    = string
+  type = string
 }
 
 variable "github_env" {
-  type    = string
+  type = string
 }
