@@ -3,6 +3,8 @@ name: 'Terraform'
 on:
   pull_request:
     branches: [ "main", "staging" ]
+  push:
+    branches: [ "main", "staging" ]
 
 permissions:
   contents: read
@@ -59,3 +61,8 @@ jobs:
     - name: Terraform Plan
       working-directory: ${{ matrix.terraform-directory }}
       run: terraform plan -input=false
+
+    - name: Terraform Apply
+      working-directory: ${{ matrix.terraform-directory }}
+      if: github.event_name == 'push'
+      run: terraform apply -auto-approve -input=false
