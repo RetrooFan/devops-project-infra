@@ -46,9 +46,11 @@ jobs:
       working-directory: ${{ matrix.terraform-directory }}
       run: |
         cp terraform.tfvars.example terraform.tfvars
-        sed -i 's/"profile_name"/null/g' terraform.tfvars
         sed -i 's/"bucket_name"/"${{ secrets.TERRAFORM_BUCKET_NAME }}"/g' terraform.tfvars
         sed -i 's/"repository_name"/"${{ secrets.TERRAFORM_REPOSITORY_NAME }}"/g' terraform.tfvars
+        sed -i 's/"github_org"/"${{ secrets.TERRAFORM_GITHUB_ORG }}"/g' terraform.tfvars
+        sed -i 's/"github_repo"/"${{ secrets.TERRAFORM_GITHUB_REPO }}"/g' terraform.tfvars
+        sed -i 's/"github_env"/"${{ secrets.TERRAFORM_GITHUB_ENV }}"/g' terraform.tfvars
 
     - name: Terraform Init
       working-directory: ${{ matrix.terraform-directory }}
