@@ -50,7 +50,7 @@ jobs:
     - name: Show vars.TERRAFORM_REPOSITORY_NAME
       working-directory: ${{ matrix.terraform-directory }}
       run: |
-        env
+        echo ${{ vars.ENVIRONMENT }}
 
     - name: Configure 'terraform.tfvars' file
       working-directory: ${{ matrix.terraform-directory }}
