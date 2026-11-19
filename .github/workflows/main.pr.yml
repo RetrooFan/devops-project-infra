@@ -68,6 +68,9 @@ jobs:
       working-directory: ${{ matrix.terraform-directory }}
       run: terraform plan -input=false -out=tfplan
 
+    - name: Check for 'token.actions.githubusercontent.com'
+      run: aws iam list-open-id-connect-providers
+
     - name: Terraform Apply
       working-directory: ${{ matrix.terraform-directory }}
       if: github.event_name == 'push'
