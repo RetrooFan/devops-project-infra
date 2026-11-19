@@ -25,9 +25,7 @@ jobs:
 
     steps:
     - name: Show vars.ENVIRONMENT
-      working-directory: ${{ matrix.terraform-directory }}
-      run: |
-        echo ${{ vars.ENVIRONMENT }}
+      run: echo ${{ vars.ENVIRONMENT }}
 
     - name: Checkout
       uses: actions/checkout@v5
