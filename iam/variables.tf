@@ -5,3 +5,7 @@ variable "github_org" {
 variable "github_repo" {
   type    = string
 }
+
+variable "github_env" {
+  type    = string
+}
