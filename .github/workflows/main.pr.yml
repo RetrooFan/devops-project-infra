@@ -40,6 +40,7 @@ jobs:
       run: |
         cp backend.tf.example backend.tf
         sed -i 's/"bucket"/"${{ secrets.TERRAFORM_BUCKET_NAME }}"/g' backend.tf
+        sed -i 's/"region"/"${{ env.AWS_REGION }}"/g' backend.tf
 
     - name: Configure 'terraform.tfvars' file
       working-directory: ${{ matrix.terraform-directory }}
