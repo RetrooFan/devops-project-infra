@@ -1,0 +1,58 @@
+name: 'Terraform'
+
+on:
+  pull_request:
+    branches: [ "main" ]
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+    environment: prod
+    strategy:
+      matrix:
+        terraform-directory: [backend, storage]
+    env:
+      AWS_REGION: eu-central-1
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v3
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+        aws-region: ${{ env.AWS_REGION }}
+
+    - name: Terraform Format
+      working-directory: ${{ matrix.terraform-directory }}
+      run: terraform fmt -check
+
+    - name: Configure 'backend.tf' file
+      working-directory: ${{ matrix.terraform-directory }}
+      run: |
+        cp backend.tf.example backend.tf
+        sed -i 's/"bucket"/"${{ vars.TERRAFORM_BUCKET_NAME }}"/g' backend.tf
+
+    - name: Configure 'terraform.tfvars' file
+      working-directory: ${{ matrix.terraform-directory }}
+      run: |
+        cp terraform.tfvars.example terraform.tfvars
+        sed -i 's/"profile_name"/null/g' terraform.tfvars
+        sed -i 's/"bucket_name"/"${{ vars.TERRAFORM_BUCKET_NAME }}"/g' terraform.tfvars
+        sed -i 's/"repository_name"/"${{ vars.TERRAFORM_REPOSITORY_NAME }}"/g' terraform.tfvars
+
+    - name: Terraform Init
+      working-directory: ${{ matrix.terraform-directory }}
+      run: terraform init -input=false
+
+    - name: Terraform Plan
+      working-directory: ${{ matrix.terraform-directory }}
+      run: terraform plan -input=false
