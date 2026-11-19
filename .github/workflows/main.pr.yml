@@ -60,9 +60,9 @@ jobs:
 
     - name: Terraform Plan
       working-directory: ${{ matrix.terraform-directory }}
-      run: terraform plan -input=false
+      run: terraform plan -input=false -out=tfplan
 
     - name: Terraform Apply
       working-directory: ${{ matrix.terraform-directory }}
       if: github.event_name == 'push'
-      run: terraform apply -auto-approve -input=false
+      run: terraform apply -auto-approve -input=false tfplan
