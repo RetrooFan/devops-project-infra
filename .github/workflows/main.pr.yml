@@ -2,7 +2,7 @@ name: 'Terraform'
 
 on:
   pull_request:
-    branches: [ "main" ]
+    branches: [ "main", "staging" ]
 
 permissions:
   contents: read
@@ -11,7 +11,7 @@ permissions:
 jobs:
   terraform:
     runs-on: ubuntu-latest
-    environment: prod
+    environment: ${{ github.base_ref == 'main' && 'prod' || 'staging' }}
     strategy:
       matrix:
         terraform-directory: [backend, storage]
@@ -21,6 +21,9 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v4
+
+    - name: Show environment variables
+      run: env
 
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v3
