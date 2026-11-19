@@ -13,7 +13,10 @@ permissions:
 jobs:
   terraform:
     runs-on: ubuntu-latest
-    environment: ${{ github.base_ref == 'main' && 'prod' || 'staging' }}
+    environment: >-
+      ${{ ((github.event_name == 'push' && github.ref_name == 'main') ||
+          (github.event_name == 'pull_request' && github.base_ref == 'main')) &&
+          'prod' || 'staging' }}
     strategy:
       matrix:
         terraform-directory: [backend, iam]
@@ -21,6 +24,9 @@ jobs:
       AWS_REGION: eu-central-1
 
     steps:
+    - name: Show vars.ENVIRONMENT
+      run: echo ${{ vars.ENVIRONMENT }}
+
     - name: Checkout
       uses: actions/checkout@v5
 
@@ -49,7 +55,7 @@ jobs:
       run: |
         cp terraform.tfvars.example terraform.tfvars
         sed -i 's/"bucket_name"/"${{ secrets.TERRAFORM_BUCKET_NAME }}"/g' terraform.tfvars
-        sed -i 's/"repository_name"/"${{ secrets.TERRAFORM_REPOSITORY_NAME }}"/g' terraform.tfvars
+        sed -i 's/"repository_name"/"${{ vars.TERRAFORM_REPOSITORY_NAME }}"/g' terraform.tfvars
         sed -i 's/"github_org"/"${{ secrets.TERRAFORM_GITHUB_ORG }}"/g' terraform.tfvars
         sed -i 's/"github_repo"/"${{ secrets.TERRAFORM_GITHUB_REPO }}"/g' terraform.tfvars
         sed -i 's/"github_env"/"${{ secrets.TERRAFORM_GITHUB_ENV }}"/g' terraform.tfvars
