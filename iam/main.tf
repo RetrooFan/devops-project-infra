@@ -23,7 +23,7 @@ data "aws_iam_policy_document" "github_actions_assume_role" {
 }
 
 resource "aws_iam_role" "github_actions_admin" {
-  name               = "github-actions-terraform-admin"
+  name               = "github-actions-terraform-admin-${var.github_env}"
   assume_role_policy = data.aws_iam_policy_document.github_actions_assume_role.json
 }
 
