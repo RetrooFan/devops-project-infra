@@ -22,9 +22,6 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
 
-    - name: Show environment variables
-      run: env
-
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v3
 
@@ -42,15 +39,15 @@ jobs:
       working-directory: ${{ matrix.terraform-directory }}
       run: |
         cp backend.tf.example backend.tf
-        sed -i 's/"bucket"/"${{ vars.TERRAFORM_BUCKET_NAME }}"/g' backend.tf
+        sed -i 's/"bucket"/"${{ secrets.TERRAFORM_BUCKET_NAME }}"/g' backend.tf
 
     - name: Configure 'terraform.tfvars' file
       working-directory: ${{ matrix.terraform-directory }}
       run: |
         cp terraform.tfvars.example terraform.tfvars
         sed -i 's/"profile_name"/null/g' terraform.tfvars
-        sed -i 's/"bucket_name"/"${{ vars.TERRAFORM_BUCKET_NAME }}"/g' terraform.tfvars
-        sed -i 's/"repository_name"/"${{ vars.TERRAFORM_REPOSITORY_NAME }}"/g' terraform.tfvars
+        sed -i 's/"bucket_name"/"${{ secrets.TERRAFORM_BUCKET_NAME }}"/g' terraform.tfvars
+        sed -i 's/"repository_name"/"${{ secrets.TERRAFORM_REPOSITORY_NAME }}"/g' terraform.tfvars
 
     - name: Terraform Init
       working-directory: ${{ matrix.terraform-directory }}
