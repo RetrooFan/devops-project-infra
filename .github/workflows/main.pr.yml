@@ -24,6 +24,11 @@ jobs:
       AWS_REGION: eu-central-1
 
     steps:
+    - name: Show vars.ENVIRONMENT
+      working-directory: ${{ matrix.terraform-directory }}
+      run: |
+        echo ${{ vars.ENVIRONMENT }}
+
     - name: Checkout
       uses: actions/checkout@v5
 
@@ -46,11 +51,6 @@ jobs:
         cp backend.tf.example backend.tf
         sed -i 's/"bucket"/"${{ secrets.TERRAFORM_BUCKET_NAME }}"/g' backend.tf
         sed -i 's/"region"/"${{ env.AWS_REGION }}"/g' backend.tf
-
-    - name: Show vars.TERRAFORM_REPOSITORY_NAME
-      working-directory: ${{ matrix.terraform-directory }}
-      run: |
-        echo ${{ vars.ENVIRONMENT }}
 
     - name: Configure 'terraform.tfvars' file
       working-directory: ${{ matrix.terraform-directory }}
