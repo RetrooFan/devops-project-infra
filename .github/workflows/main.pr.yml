@@ -47,6 +47,11 @@ jobs:
         sed -i 's/"bucket"/"${{ secrets.TERRAFORM_BUCKET_NAME }}"/g' backend.tf
         sed -i 's/"region"/"${{ env.AWS_REGION }}"/g' backend.tf
 
+    - name: Show vars.TERRAFORM_REPOSITORY_NAME
+      working-directory: ${{ matrix.terraform-directory }}
+      run: |
+        echo ${{ vars.TERRAFORM_REPOSITORY_NAME }}
+
     - name: Configure 'terraform.tfvars' file
       working-directory: ${{ matrix.terraform-directory }}
       run: |
