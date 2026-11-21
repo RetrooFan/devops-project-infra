@@ -39,10 +39,6 @@ jobs:
         role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
         aws-region: ${{ env.AWS_REGION }}
 
-    - name: Terraform Format
-      working-directory: ${{ matrix.terraform-directory }}
-      run: terraform fmt -check
-
     - name: Configure 'backend.tf' file
       working-directory: ${{ matrix.terraform-directory }}
       run: |
@@ -60,6 +56,10 @@ jobs:
         sed -i 's/"github_repo"/"${{ secrets.TERRAFORM_GITHUB_REPO }}"/g' terraform.tfvars
         sed -i 's/"github_env"/"${{ secrets.TERRAFORM_GITHUB_ENV }}"/g' terraform.tfvars
 
+    - name: Terraform Format
+      working-directory: ${{ matrix.terraform-directory }}
+      run: terraform fmt -check
+
     - name: Terraform Init
       working-directory: ${{ matrix.terraform-directory }}
       run: terraform init -input=false
@@ -69,6 +69,6 @@ jobs:
       run: terraform plan -input=false -out=tfplan
 
     - name: Terraform Apply
-      working-directory: ${{ matrix.terraform-directory }}
       if: github.event_name == 'push'
+      working-directory: ${{ matrix.terraform-directory }}
       run: terraform apply -auto-approve -input=false tfplan
