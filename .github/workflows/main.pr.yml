@@ -56,6 +56,11 @@ jobs:
         sed -i 's/"github_repo"/"${{ secrets.TERRAFORM_GITHUB_REPO }}"/g' terraform.tfvars
         sed -i 's/"github_env"/"${{ secrets.TERRAFORM_GITHUB_ENV }}"/g' terraform.tfvars
 
+    - name: Configure 'github_oidc.tf' file
+      working-directory: ${{ matrix.terraform-directory }}
+      if: matrix.terraform-directory == 'iam' && vars.ENVIRONMENT == 2
+      run: cp github_oidc.tf.example github_oidc.tf
+
     - name: Terraform Format
       working-directory: ${{ matrix.terraform-directory }}
       run: terraform fmt -check
