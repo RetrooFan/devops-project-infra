@@ -2,9 +2,9 @@ name: 'Terraform'
 
 on:
   pull_request:
-    branches: [ "main", "staging" ]
+    branches: [ main, staging ]
   push:
-    branches: [ "main", "staging" ]
+    branches: [ main, staging ]
 
 permissions:
   contents: read
