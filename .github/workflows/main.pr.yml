@@ -2,9 +2,9 @@ name: 'Terraform'
 
 on:
   pull_request:
-    branches: [ main, staging ]
+    branches: [ main, prod ]
   push:
-    branches: [ main, staging ]
+    branches: [ main, prod ]
 
 permissions:
   contents: read
@@ -14,8 +14,8 @@ jobs:
   terraform:
     runs-on: ubuntu-latest
     environment: >-
-      ${{ ((github.event_name == 'pull_request' && github.base_ref == 'main') ||
-          (github.event_name == 'push' && github.ref_name == 'main')) &&
+      ${{ ((github.event_name == 'pull_request' && github.base_ref == 'prod') ||
+          (github.event_name == 'push' && github.ref_name == 'prod')) &&
           'prod' || 'staging' }}
     strategy:
       matrix:
