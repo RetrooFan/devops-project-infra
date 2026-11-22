@@ -1,7 +1,5 @@
 name: 'Terraform'
 
-
-
 on:
   pull_request:
     branches: [ main, staging ]
