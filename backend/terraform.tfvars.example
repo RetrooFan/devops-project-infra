@@ -1,5 +1,6 @@
 bucket_name = "bucket_name"
 
-github_org  = "github_org"
-github_repo = "github_repo"
-github_env  = "github_env"
+github_org   = "github_org"
+github_repo  = "github_repo"
+github_repo2 = "github_repo2"
+github_env   = "github_env"
