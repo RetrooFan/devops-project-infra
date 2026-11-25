@@ -17,7 +17,10 @@ data "aws_iam_policy_document" "github_actions_assume_role" {
     condition {
       test     = "StringEquals"
       variable = "token.actions.githubusercontent.com:ref"
-      values   = ["refs/heads/main", "refs/heads/prod"]
+      values   = [
+        "refs/heads/main",
+        "refs/heads/prod"
+      ]
     }
 
     condition {
