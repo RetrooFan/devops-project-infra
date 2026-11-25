@@ -6,6 +6,10 @@ variable "github_repo" {
   type = string
 }
 
+variable "github_repo2" {
+  type = string
+}
+
 variable "github_env" {
   type = string
 }
