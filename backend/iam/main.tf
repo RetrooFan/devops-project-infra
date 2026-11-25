@@ -16,6 +16,12 @@ data "aws_iam_policy_document" "github_actions_assume_role" {
 
     condition {
       test     = "StringEquals"
+      variable = "token.actions.githubusercontent.com:ref"
+      values   = ["refs/heads/main", "refs/heads/prod"]
+    }
+
+    condition {
+      test     = "StringEquals"
       variable = "token.actions.githubusercontent.com:sub"
       values   = ["repo:${var.github_org}/${var.github_repo}:environment:${var.github_env}"]
     }
@@ -30,4 +36,14 @@ resource "aws_iam_role" "github_actions_admin" {
 resource "aws_iam_role_policy_attachment" "admin_access" {
   role       = aws_iam_role.github_actions_admin.name
   policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
+}
+
+resource "aws_iam_role" "github_actions_ecr_power_user" {
+  name               = "github-actions-ecr-push-role-${var.github_env}"
+  assume_role_policy = data.aws_iam_policy_document.github_actions_assume_role.json
+}
+
+resource "aws_iam_role_policy_attachment" "ecr_power_user_access" {
+  role       = aws_iam_role.github_actions_ecr_power_user.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryPowerUser"
 }
