@@ -19,7 +19,7 @@ jobs:
           'prod' || 'staging' }}
     strategy:
       matrix:
-        terraform-directory: [backend, infrastructure]
+        terraform-directory: [backend, infra]
     env:
       AWS_REGION: eu-central-1
 
