@@ -54,6 +54,7 @@ jobs:
           sed -i 's/"repository_name"/"${{ vars.TERRAFORM_REPOSITORY_NAME }}"/g' terraform.tfvars
           sed -i 's/"github_org"/"${{ secrets.TERRAFORM_GITHUB_ORG }}"/g' terraform.tfvars
           sed -i 's/"github_repo"/"${{ secrets.TERRAFORM_GITHUB_REPO }}"/g' terraform.tfvars
+          sed -i 's/"github_repo2"/"${{ secrets.TERRAFORM_GITHUB_REPO2 }}"/g' terraform.tfvars
           sed -i 's/"github_env"/"${{ secrets.TERRAFORM_GITHUB_ENV }}"/g' terraform.tfvars
 
       - name: Configure 'github_oidc.tf' file
