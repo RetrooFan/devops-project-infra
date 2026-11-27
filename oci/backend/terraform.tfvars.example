@@ -1,0 +1,3 @@
+region           = "region"
+compartment_ocid = "compartment_ocid"
+bucket_name      = "bucket_name"

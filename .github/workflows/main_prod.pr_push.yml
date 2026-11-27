@@ -11,7 +11,7 @@ permissions:
   id-token: write
 
 jobs:
-  terraform:
+  aws:
     runs-on: ubuntu-latest
     environment: >-
       ${{ ((github.event_name == 'pull_request' && github.base_ref == 'prod') ||
@@ -50,6 +50,7 @@ jobs:
         working-directory: ${{ matrix.terraform-directory }}
         run: |
           cp terraform.tfvars.example terraform.tfvars
+          sed -i 's/"region"/"${{ env.AWS_REGION }}"/g' terraform.tfvars
           sed -i 's/"bucket_name"/"${{ secrets.TERRAFORM_BUCKET_NAME }}"/g' terraform.tfvars
           sed -i 's/"repository_name"/"${{ vars.TERRAFORM_REPOSITORY_NAME }}"/g' terraform.tfvars
           sed -i 's/"github_org"/"${{ secrets.TERRAFORM_GITHUB_ORG }}"/g' terraform.tfvars
