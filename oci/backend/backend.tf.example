@@ -1,0 +1,8 @@
+terraform {
+  backend "oci" {
+    bucket    = "bucket"
+    namespace = "namespace"
+    key       = "terraform-states/backend.tfstate"
+    region    = "region"
+  }
+}
