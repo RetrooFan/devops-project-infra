@@ -19,7 +19,7 @@ jobs:
           'prod' || 'staging' }}
     strategy:
       matrix:
-        terraform-directory: [backend, infra]
+        terraform-directory: [aws/backend, aws/infra]
     env:
       AWS_REGION: eu-central-1
 
@@ -59,7 +59,7 @@ jobs:
 
       - name: Configure 'github_oidc.tf' file
         working-directory: ${{ matrix.terraform-directory }}/iam
-        if: matrix.terraform-directory == 'backend' && vars.ENVIRONMENT == 2
+        if: matrix.terraform-directory == 'aws/backend' && vars.ENVIRONMENT == 2
         run: cp github_oidc.tf.example github_oidc.tf
 
       - name: Terraform Format
