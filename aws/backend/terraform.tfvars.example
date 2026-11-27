@@ -1,3 +1,4 @@
+region      = "region"
 bucket_name = "bucket_name"
 
 github_org   = "github_org"
