@@ -8,5 +8,5 @@ terraform {
 }
 
 provider "oci" {
-  region = "eu-frankfurt-1"
+  region = var.region
 }
