@@ -1,10 +1,10 @@
-resource "aws_s3_bucket" "terraform_states" {
+resource "aws_s3_bucket" "main_bucket" {
   bucket        = var.bucket_name
   force_destroy = false
 }
 
 resource "aws_s3_bucket_versioning" "state_versioning" {
-  bucket = aws_s3_bucket.terraform_states.id
+  bucket = aws_s3_bucket.main_bucket.id
 
   versioning_configuration {
     status = "Enabled"
@@ -12,7 +12,7 @@ resource "aws_s3_bucket_versioning" "state_versioning" {
 }
 
 resource "aws_s3_bucket_server_side_encryption_configuration" "state_encryption" {
-  bucket = aws_s3_bucket.terraform_states.id
+  bucket = aws_s3_bucket.main_bucket.id
 
   rule {
     apply_server_side_encryption_by_default {
@@ -22,7 +22,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "state_encryption"
 }
 
 resource "aws_s3_bucket_public_access_block" "state_public_block" {
-  bucket = aws_s3_bucket.terraform_states.id
+  bucket = aws_s3_bucket.main_bucket.id
 
   block_public_acls       = true
   block_public_policy     = true
@@ -31,7 +31,7 @@ resource "aws_s3_bucket_public_access_block" "state_public_block" {
 }
 
 resource "aws_s3_bucket_lifecycle_configuration" "state_lifecycle" {
-  bucket = aws_s3_bucket.terraform_states.id
+  bucket = aws_s3_bucket.main_bucket.id
 
   rule {
     id     = "keep-at-least-10-versions-delete-after-30-days"
